@@ -1,0 +1,436 @@
+---
+title: "Plots - BaseR"
+author: "DSC130 - Exploring Data w/R"
+date: '2022-09-12'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Objectives
+
+* Identify data types
+* Plot categorical data
+* Plot numerical data
+
+
+
+---
+
+<!----------------------------------------------------------------------------->
+## Data Types
+
+There are basically two data types:
+
+1. Categorical (or nominal)
+2. Numerical
+
+The data type will dictate the plot function used.  
+
+
+
+
+
+
+
+
+---
+
+<!----------------------------------------------------------------------------->
+## Categorical Data
+
+Categorical data is associated with discrete variables (variables that can take 
+finite values).  Categorical data is often referred to **group** variables.
+
+#### Examples of Categorical data
+
+1. Class rank: freshman, sophomore, junior, senior
+2. Political party: Republican or Democrat
+3. Blood type: A, B, AB, or O
+4. Favorite Ice Cream: Chocolate or Vanilla
+5. Nationality: French, German, Russian, ...
+6. Parts of Speech: noun, verb, pronoun, preposition, ...
+
+#### Plots for Categorical Data
+
+1. Bar chart
+2. Pie Chart
+3. Violin Plot
+4. Correlation Plot
+
+
+
+
+
+---
+
+<!----------------------------------------------------------------------------->
+## Dataset
+
+We will work with the `mtcars` data set bundled with R. 
+
+```{r}
+data(mtcars)
+```
+
+
+## Bar chart
+```{r}
+barplot(table(mtcars$cyl))
+
+# See ?barplot
+```
+Alternatively, 
+```{r}
+# Alternative barplot method
+plot(factor(mtcars$cyl))
+```
+
+### Grouped Barplot
+
+A **grouped barplot**, also known as side by side bar plot or clustered bar chart is a barplot in R with two or more variables. The chart will display the bars for each of the multiple variables.
+
+Look for common [color palettes](https://www.canva.com/colors/color-palettes/).
+
+
+```{r}
+# Short variable names. Note: Could "attach" instead
+am = mtcars$am
+cyl = mtcars$cyl
+
+# Convert am to factor
+am = factor(am)
+
+# Change factor levels to readable names (instead 0/1)
+levels(am) = c("Automatic", "Manual")
+
+# Table cylinder v transmission type
+cylvtrans = table(cyl, am)
+# cylvtrans <- xtabs(~cyl + am , data = mtcars) # Equivalent
+
+barplot(cylvtrans,
+        main = "Grouped barchart",
+        xlab = "Transmission type", ylab = "Frequency",
+        col = c("#336699", "#80400B", "#FCAE1E"),
+        legend.text = rownames(cylvtrans),
+        beside = TRUE) # Grouped bars
+```
+### Stacked Barplots
+
+A stacked bar chart is like a grouped bar graph, but the frequency of the variables are stacked. This type of barplot will be created by default when passing as argument a table with two or more variables, as the argument beside defaults to FALSE.
+
+```{r}
+barplot(cylvtrans,
+        main = "Stacked barchart",
+        xlab = "Transmission type", ylab = "Frequency",
+        col = c("#FF8370", "#00B1B0", "#FEC84D"),
+        legend.text = rownames(cylvtrans),
+        beside = FALSE) # Stacked bars (default)
+```
+### Mosaic plots
+
+Search internet for mosaic plots in R.  You will need to install a library called: "graphics".
+
+
+
+---
+
+<!----------------------------------------------------------------------------->
+### Pie Chart
+
+A pie chart, also known as circle chart or pie plot, is a circular graph that represents proportions or percentages in slices, where the area and arc length of each slice is proportional to the represented quantity. Variations of this type of chart are doughnut charts, waffle charts and pie chart.
+
+
+The R pie function allows you to create a pie chart in R. Consider, for instance, that you want to create a piechart of the following variable, that represents the count of some event:
+
+```{r}
+pie.sales = c(0.12, 0.3, 0.26, 0.16, 0.04, 0.12)
+names(pie.sales) = c("Blueberry", "Cherry",
+    "Apple", "Boston Cream", "Other", "Vanilla Cream")
+```
+
+
+The code for a pie chart in R is as follows. Note that you can customize the size of the pie (from -1 to 1) with the radius argument, that by default takes the value 0.8.
+
+```{r}
+pie(pie.sales, col=rainbow(6))
+
+# See ?pie
+```
+
+---
+
+<!----------------------------------------------------------------------------->
+## Histogram (numerical data)
+
+Displays frequency (or relative frequency) distribution.  
+
+```{r}
+hist(mtcars$mpg)
+
+# See ?hist
+```
+```{r}
+hist(mtcars$mpg, freq = FALSE, main = "Histogram and density")
+
+# Calculate density
+dx = density(mtcars$mpg)
+
+# Add density
+lines(dx, lwd = 2, col = "red")
+
+
+```
+### Boxplots 
+
+A **boxplot** in R, also known as box and whisker plot, is a graphical representation which allows you to summarize the main characteristics of the data (position, dispersion, skewness, etc.) and identify the presence of outliers.
+
+The box of a boxplot starts in the first quartile (25%) and ends in the third (75%). Hence, the box represents the 50% of the central data, with a line inside that represents the median. On each side of the box there is drawn a segment to the furthest data without counting boxplot outliers, that in case there exist, will be represented with circles.
+
+
+
+```{r}
+boxplot(mtcars$mpg)
+```
+
+Data with outliers:
+
+```{r}
+x = c(8, 5, 14, -9, 19, 12, 3, 9, 7, 4, 4, 6, 8, 12, -8, 2, 0, -1, 5, 3)
+boxplot(x, horizontal = TRUE, col=2)
+```
+Display data too.
+
+```{r}
+boxplot(x, horizontal = TRUE, col=2)
+stripchart(x, method = "jitter", pch = 19, add = TRUE, col = "blue")
+```
+#### Multiple Boxplots
+
+```{r}
+boxplot(wt ~ cyl, data = mtcars, col = rainbow(length(unique(mtcars$cyl))))
+```
+```{r}
+boxplot(wt ~ cyl, data = mtcars, col = rainbow(length(unique(mtcars$cyl))))
+stripchart(mtcars$wt ~ mtcars$cyl, vertical = TRUE, method = "jitter",
+           pch = 19, add = TRUE, col = 4:4+length(levels(mtcars$cyl)))
+```
+
+---
+
+<!----------------------------------------------------------------------------->
+### Scatter plot
+
+Scatter plots are used for **bivariate** data (e.g., height vs. weight).  Displays
+relationship between two variables.  
+
+```{r}
+# mpg vs. displacement
+plot(mtcars$disp,mtcars$mpg)
+```
+```{r}
+sort(c(unique(mtcars$cyl)))
+```
+
+
+```{r}
+plot(mtcars$disp,mtcars$mpg, col=mtcars$cyl)  # 3rd variable color
+
+# Add legend to plot
+legend("topright",                    
+       legend = c("4", "6", "8"),
+       col=sort(c(unique(mtcars$cyl))),
+       pch = 20)
+
+```
+
+
+```{r}
+cols = c("deepskyblue", "magenta", "gray50")
+plot(mpg ~ wt, xlab="Weight (1000lbs)", ylab="Miles / gallon", col = cyl, pch = 19, data=mtcars)
+legend(x = "topright",
+       title = "Number of cylinders",
+       horiz = TRUE,
+       legend = c("4", "6", "8"), 
+       bty = 'n',
+       cex = 0.7,
+       col = cols,
+       pch=20)
+
+```
+
+---
+
+<!----------------------------------------------------------------------------->
+### Plot Attributes
+
+You can control many features of a plot (e.g., color, title, x-axis labels, etc.).
+
+```{r}
+plot(mtcars$disp,mtcars$mpg, 
+     main = "MPG vs. Displacement", 
+     xlab = "Displacement",
+     ylab = "MPG", 
+     col = "#336699", 
+     pch = 19)
+
+# See ?plot
+```
+```{r}
+plot(mtcars$disp,mtcars$mpg, col=2)
+grid(nx = NULL, ny = NULL,
+     lty = 2,      # Grid line type
+     col = "gray", # Grid line color
+     lwd = 2)      # Grid line width
+```
+```{r}
+hist(mtcars$mpg)
+grid(nx = NA, ny = NULL,
+     lty = 1, col = "gray", lwd = 1)
+# hist(mtcars$mpg, col = 4, add = TRUE)
+```
+
+### Backgrounds
+
+```{r}
+# Data
+set.seed(132)
+x <- rnorm(500)
+
+boxplot(x)
+
+# Light gray background
+rect(par("usr")[1], par("usr")[3],
+     par("usr")[2], par("usr")[4],
+     col = "#ebebeb")
+# See: https://www.rdocumentation.org/packages/graphics/versions/3.6.2/topics/par
+
+
+# Add white grid
+grid(nx = NULL, ny = NULL, col = "white", lwd = 2)
+
+# Boxplot
+boxplot(x, col = 4, add = TRUE)
+```
+
+
+### Multiple Plots
+
+<!-- https://r-charts.com/base-r/combining-plots/ -->
+
+```{r}
+# Data
+x = rnorm(50)
+
+# One row, two columns
+par(mfrow = c(1, 2))
+
+# The following two plots will be combined
+hist(x, main = "Left plot")     # Left 
+boxplot(x, main = "Right plot") # Right
+
+# RESET to the original graphics device
+par(mfcol = c(1, 1)) 
+
+```
+
+```{r}
+# Data
+set.seed(6)
+x = rexp(50)
+
+# Two rows, two columns
+par(mfcol = c(2, 2))
+
+# Plots
+hist(x, main = "Top left")                   # Top left
+boxplot(x, main = "Bottom left")             # Bottom left
+plot(x, main = "Top right")                  # Top right
+pie(table(round(x)), main = "Bottom right")  # Bottom right
+
+# RESET to the original graphics device
+par(mfcol = c(1, 1)) 
+
+```
+
+
+### Annotation
+
+```{r}
+# Data
+set.seed(123)
+x = 1:50
+y = x + rnorm(50, sd = 10)
+groups = sample(letters, 50, replace = TRUE)
+```
+
+```{r}
+plot(x, y, pch = 19, col = 4)
+text(x = 15, y = 50, label = "Text annotation",
+     col = "blue",   # Color of the text
+     font = 2,      # Bold face
+     cex = 1.1)     # Size 
+```
+
+
+```{r}
+plot(x, y, pch = 19, col = 4)
+
+# Split the text in several lines
+text(x = 15, y = 50,
+     label = "Text\n annotation") # Split text 
+
+```
+
+```{r}
+plot(x, y, pch = 19, col = 4,
+     ylim = c(-10, 70)) # Change axis limits
+text(x = x, y = y - 3,  # Fine-tune the position
+     label = groups)  
+
+# Config axis
+# Add X-axis
+axis(1,
+     col = "blue",        # Axis line color
+     col.ticks = "green", # Ticks color
+     col.axis = "red")    # Labels color
+
+```
+
+
+### Muliple data one graph
+
+Here's some data
+```{r}
+# Reproducible data
+set.seed(1)
+x = runif(100, min = -5, max = 5)
+y = x ^ 3 + rnorm(100, mean = 0, sd = 5)
+```
+
+
+```{r}
+# Increase the plot margins
+par(mar = c(5, 4, 4, 4) + 0.25)
+
+# First data plot
+plot(x, y, pch = 19, ylab = "Var 1")
+
+# SET TRUE to merge plots
+par(new = TRUE)
+
+# Another data set to plot
+plot(x ^ 2, y ^ 2,
+     col = 4, pch = 19,
+     axes = FALSE, # No axes
+     bty = "n",    # No box
+     xlab = "", ylab = "") # No axis labels
+
+# New axis on right with proper scale
+axis(4)
+
+# Axis label (if needed)
+mtext("Var 2", side = 4, line = 3, col = 4) 
+```
