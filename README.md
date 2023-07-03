@@ -21,6 +21,6 @@ After successful completion of this course the student will be able to:
 - Use effective and appropriate methods for visualizing and describing data;
 - Demonstrate "best practice" coding;
 - Demonstrate proficiency building basic statistical models, test hypothesis, and use models for interpretation and prediction; and
-- Communicate results (via interactive dashboard).
+- Communicate results (via interactive dashboard, i.e., RShiny).
 
 
