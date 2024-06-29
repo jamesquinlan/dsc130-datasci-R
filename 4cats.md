@@ -22,10 +22,10 @@ library(tidyverse)
 
 ## Characters and Factors
 
-Factors are used to work with categorical variables, variables that have a fixed and known set of possible values. Many base R functions automatically convert characters to factors.
+Factors are used to work with categorical variables with a fixed and known set of possible values. Many base R functions automatically convert characters to factors.
 Which could not be what is intended.  
 
-Number of factors (should) be less than the number of character values.  
+The number of factors (should) be less than the number of character values.  
 
 ```{r}
 # Copy data
