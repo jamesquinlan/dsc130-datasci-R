@@ -1,0 +1,256 @@
+---
+title: "Killings by Police"
+author: "DSC130"
+date: "Assignment 1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+<style>
+p{font-size:15px;}
+h1{font-weight: bold;}
+h2{color: #336699;}
+h3{color: #666666;}
+ul{font-size:14px;}
+ol{font-size:15px;}
+</style>
+
+
+# Assignment Tasks
+
+##### 1. Obtain the raw data from the source (see # Sources)
+
+```{r}
+killings = read.csv('https://raw.githubusercontent.com/fivethirtyeight/data/master/police-killings/police_killings.csv') 
+```
+
+##### 2. Determine how many records the data set contain. 
+
+```{r}
+dim(killings)[1]  # [1] Rows = observations = records
+```
+
+##### 3. How many variables? 
+
+```{r}
+dim(killings)[2]
+```
+
+##### 4. How many different data types are there? 
+
+```{r}
+str(killings)
+```
+
+##### 5. What are the data types? (Make a list)  
+```{r, results='hide'}
+str(killings)
+```
+**Answer**: 
+
+- chr
+- int
+- num
+
+---
+
+
+##### 6. What type is age? Why?  What type should it be?
+
+**Answer**: Its a `chr`, should be `int`.
+
+```{r}
+killings$age = as.integer(killings$age)
+```
+
+
+
+
+
+##### 7. What is the average age of deceased? Round to nearest integer.
+
+```{r}
+round(mean(killings$age, na.rm = TRUE))
+```
+
+
+#### 8. Which state had most police killings?
+
+```{r}
+# max(table(killings$state))
+byState = data.frame(table(killings$state))
+byState
+# max(table(killings$state))
+```
+
+```{r}
+# subset(data, row_filter, column_filter)
+maxState = subset(byState$Var1, byState$Freq == max(byState$Freq), byState$Var1)
+# subset
+```
+
+
+
+##### 9. What is the youngest person killed by police? 
+
+```{r}
+min(killings$age, na.rm = T)
+```
+
+
+
+
+##### 10. How many deceased were armed with a knife?
+```{r}
+# length(which(killings$armed == "Knife"))
+```
+```{r}
+# length(which(killings$armed == "No" & killings$raceethnicity=="Black"))
+```
+```{r}
+# List name and race
+# killings[, c("name","raceethnicity")]
+```
+
+```{r}
+# Find the STATE (chr) with most deceased.  
+DF = data.frame(table(killings$state))
+colnames(DF)[1] = "STATE"
+DF$STATE = as.character(DF$STATE)
+DF[DF$Freq == max(DF$Freq),1]
+
+```
+
+
+```{r}
+# List name and race
+# subset(killings[, c("name")], killings$raceethnicity =="Black") 
+```
+
+```{r}
+# List name and race
+table(killings$raceethnicity)
+```
+
+```{r,results='hide'}
+# List name and race
+subset(killings$name, killings$raceethnicity %in% "Black")
+```
+
+```{r,results='hide'}
+# List name and race
+subset(killings$name, killings$raceethnicity %in% "Black" & killings$armed %in% "No")
+```
+
+```{r,results='hide'}
+subset(killings[, c("name", "armed" ,"year" ,"age" ,"city")], killings$raceethnicity =="Black" & killings$armed=="No") 
+```
+
+```{r}
+subset(killings, killings$name == "Freddie Gray")
+```
+
+```{r,results='hide'}
+rows = c(killings$state == "CA" & killings$cause =="Taser")
+columns = c("age","college")
+subset(killings, rows, columns)
+# killings[rows,c("age","college")]
+```
+
+##### 11. How many died as a result of being tased?
+```{r}
+table(killings$cause=="Taser")
+```
+
+##### 12. Compare deaths by race/ethnicity. Use a barchart.
+**Hint**: `barplot()`
+```{r}
+table(killings$raceethnicity)
+```
+
+
+```{r}
+# table(killings$raceethnicity)
+# par(mar=c(5,20,4,1)+0.2)  # 'bottom', 'left', 'top', 'right'
+barplot(table(killings$raceethnicity), 
+        cex.names=0.7, 
+        col="#336688", 
+        xlab = "Race/Ethnicity",
+        ylab = "Number of Deaths",
+        main = "Police Killings 2015"
+        )
+```
+
+```{r, results='hide'}
+plot(factor(killings$raceethnicity))
+
+```
+
+##### 13. List all names and the city/state of the deceased (order by city/state).
+
+```{r, results='hide'}
+killings[order(killings$state, killings$city, decreasing = FALSE), c(1,9,10)] 
+```
+
+```{r}
+# subset(killings$name, killings$state %in% c("CA", "OH", "TX"))
+# subset(killings$name, killings$state== "CA" | killings$state== "OH" | killings$state== "TX")
+statesOfInterest = c("CA", "OH", "TX")
+subset(killings$name, killings$state %in% statesOfInterest)
+```
+
+
+
+
+
+
+
+### Create your own questions (at least 5) and provide answers.
+
+1. 
+
+1. 
+
+1. 
+
+1.
+
+```{r}
+subset(byState$Var1,byState$Freq == min(byState$Freq))
+```
+1.
+
+```{r}
+# killings[which(killings$name=="Douglas Harris"),]
+unique(killings$month)
+```
+
+---
+
+
+
+
+
+
+
+
+---
+
+
+##  Sources
+
+
+[Data](https://raw.githubusercontent.com/fivethirtyeight/data/master/police-killings/police_killings.csv)
+
+[Data Definitions](https://github.com/fivethirtyeight/data/tree/master/police-killings)
+
+[Wikipedia Listings](https://en.wikipedia.org/wiki/List_of_unarmed_African_Americans_killed_by_law_enforcement_officers_in_the_United_States#2015)
+
+[Accurate Results?](https://www.al.com/news/birmingham/2015/03/elderly_man_shot_by_birmingham_1.html)
+
+> Example: Freddie Gray has listed as armed with "knife" whereas our data has listed "Firearm".  
+https://en.wikipedia.org/wiki/Killing_of_Freddie_Gray
