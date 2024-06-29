@@ -1,0 +1,178 @@
+---
+title: "Killings by Police"
+author: "DSC130"
+date: "Assignment 1"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+<style>
+p{font-size:15px;}
+h1{font-weight: bold;}
+h2{color: #336699;}
+h3{color: #666666;}
+ul{font-size:14px;}
+ol{font-size:15px;}
+</style>
+
+
+# Assignment Tasks
+
+##### 1. Obtain the raw data from the source (see # Sources)
+
+* Can you trust this data set?  
+
+* How accurate is the data?  
+
+* What is the source?
+
+> Any analysis, results, and conclusions are only as good as your data.
+
+```{r}
+killings = read.csv('https://raw.githubusercontent.com/fivethirtyeight/data/master/police-killings/police_killings.csv')
+```
+
+
+```{r}
+killings$age = as.integer(killings$age)
+```
+
+```{r}
+mean(killings$age, na.rm = TRUE)
+```
+
+
+##### 2. Determine how many records the data set contain. 
+
+```{r}
+# [1] Rows = observations = records
+```
+
+##### 3. How many variables? 
+
+```{r}
+#
+```
+
+##### 4. How many different data types are there? 
+
+```{r}
+#
+```
+
+##### 5. What are the data types? (Make a list)  
+```{r}
+#
+```
+**Answer**: 
+
+-  
+- 
+
+---
+
+
+##### 6. What type is age? Why?  What type should it be?
+
+**Answer**:  
+
+```{r}
+#
+```
+
+
+
+
+
+##### 7. What is the average age of deceased? Round to nearest integer.
+
+```{r}
+#
+```
+
+
+#### 8. Which state had most police killings?
+
+```{r}
+#
+```
+
+
+
+##### 9. What is the youngest person killed by police? 
+
+```{r}
+#
+```
+
+
+
+
+##### 10. How many deceased were armed with a knife?
+```{r}
+#
+```
+
+
+##### 11. How many died as a result of being tased?
+```{r}
+#
+```
+
+##### 12. Compare deaths by race/ethnicity. Use a barchart.
+
+
+```{r}
+#
+```
+
+##### 13. List all names and the city/state of the deceased (order by city/state).
+
+```{r}
+#
+```
+
+
+
+
+### Create your own questions (at least 5) and provide answers.
+
+1. 
+
+1. 
+
+1. 
+
+1.
+
+1.
+
+
+
+---
+
+
+
+
+
+
+ 
+
+
+##  Sources
+
+
+[Data](https://raw.githubusercontent.com/fivethirtyeight/data/master/police-killings/police_killings.csv)
+
+[Data Definitions](https://github.com/fivethirtyeight/data/tree/master/police-killings)
+
+[Wikipedia Listings](https://en.wikipedia.org/wiki/List_of_unarmed_African_Americans_killed_by_law_enforcement_officers_in_the_United_States#2015)
+
+
+
+
+
