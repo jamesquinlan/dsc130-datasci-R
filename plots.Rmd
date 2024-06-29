@@ -172,6 +172,8 @@ hist(mtcars$mpg)
 
 # See ?hist
 ```
+
+
 ```{r}
 hist(mtcars$mpg, freq = FALSE, main = "Histogram and density")
 
@@ -180,9 +182,10 @@ dx = density(mtcars$mpg)
 
 # Add density
 lines(dx, lwd = 2, col = "red")
-
-
 ```
+
+
+
 ### Boxplots 
 
 A **boxplot** in R, also known as box and whisker plot, is a graphical representation which allows you to summarize the main characteristics of the data (position, dispersion, skewness, etc.) and identify the presence of outliers.
